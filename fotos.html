@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Fotos Profesional</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Panel de Control Superior -->
+        <div class="toolbar">
+            <div class="toolbar-left">
+                <h1>📸 Editor de Fotos</h1>
+            </div>
+            <div class="toolbar-right">
+                <button id="loadBtn" class="btn btn-primary">📁 Cargar Foto</button>
+                <button id="downloadBtn" class="btn btn-success" disabled>⬇️ Descargar</button>
+                <button id="resetBtn" class="btn btn-secondary" disabled>🔄 Restaurar</button>
+            </div>
+        </div>
+
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+
+        <div class="content">
+            <!-- Panel de Edición (Izquierda) -->
+            <div class="filters-panel">
+                <div class="panel-header">
+                    <h2>Filtros y Ajustes</h2>
+                </div>
+
+                <!-- Sección: Brillo y Contraste -->
+                <div class="filter-section">
+                    <h3>Iluminación</h3>
+                    
+                    <div class="filter-group">
+                        <label for="brightness">Brillo</label>
+                        <div class="slider-container">
+                            <input type="range" id="brightness" min="0" max="200" value="100">
+                            <span class="value" id="brightnessValue">100%</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="contrast">Contraste</label>
+                        <div class="slider-container">
+                            <input type="range" id="contrast" min="0" max="200" value="100">
+                            <span class="value" id="contrastValue">100%</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="exposure">Exposición</label>
+                        <div class="slider-container">
+                            <input type="range" id="exposure" min="0" max="200" value="100">
+                            <span class="value" id="exposureValue">100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Color -->
+                <div class="filter-section">
+                    <h3>Color</h3>
+                    
+                    <div class="filter-group">
+                        <label for="saturation">Saturación</label>
+                        <div class="slider-container">
+                            <input type="range" id="saturation" min="0" max="200" value="100">
+                            <span class="value" id="saturationValue">100%</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="hue">Matiz</label>
+                        <div class="slider-container">
+                            <input type="range" id="hue" min="-180" max="180" value="0">
+                            <span class="value" id="hueValue">0°</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="temperature">Temperatura</label>
+                        <div class="slider-container">
+                            <input type="range" id="temperature" min="0" max="200" value="100">
+                            <span class="value" id="temperatureValue">100%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Enfoque y Nitidez -->
+                <div class="filter-section">
+                    <h3>Nitidez</h3>
+                    
+                    <div class="filter-group">
+                        <label for="sharpness">Nitidez</label>
+                        <div class="slider-container">
+                            <input type="range" id="sharpness" min="0" max="200" value="100">
+                            <span class="value" id="sharpnessValue">100%</span>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="blur">Desenfoque</label>
+                        <div class="slider-container">
+                            <input type="range" id="blur" min="0" max="10" value="0">
+                            <span class="value" id="blurValue">0px</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección: Presets -->
+                <div class="filter-section">
+                    <h3>Presets</h3>
+                    <div class="preset-buttons">
+                        <button class="preset-btn" data-preset="grayscale">B&N</button>
+                        <button class="preset-btn" data-preset="sepia">Sepia</button>
+                        <button class="preset-btn" data-preset="vintage">Vintage</button>
+                        <button class="preset-btn" data-preset="cool">Frío</button>
+                        <button class="preset-btn" data-preset="warm">Cálido</button>
+                        <button class="preset-btn" data-preset="vivid">Vivido</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área de Vista Previa (Centro) -->
+            <div class="editor-container">
+                <div class="canvas-wrapper">
+                    <canvas id="canvas"></canvas>
+                    <div id="placeholderMessage" class="placeholder-message">
+                        <p>📁 Carga una foto para comenzar</p>
+                        <p class="subtitle">Haz clic en "Cargar Foto" o arrastra una imagen aquí</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel de Información (Derecha) -->
+            <div class="info-panel">
+                <div class="panel-header">
+                    <h2>Información</h2>
+                </div>
+
+                <div class="info-section">
+                    <h4>Detalles de la Imagen</h4>
+                    <div class="info-item">
+                        <label>Nombre:</label>
+                        <span id="infoName">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Dimensiones:</label>
+                        <span id="infoDimensions">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Tamaño:</label>
+                        <span id="infoSize">-</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Tipo:</label>
+                        <span id="infoType">-</span>
+                    </div>
+                </div>
+
+                <div class="info-section">
+                    <h4>Histograma</h4>
+                    <canvas id="histogramCanvas" width="100%" height="80"></canvas>
+                </div>
+
+                <div class="info-section">
+                    <h4>Atajos de Teclado</h4>
+                    <div class="shortcuts">
+                        <div class="shortcut">
+                            <kbd>Ctrl</kbd> + <kbd>Z</kbd> Deshacer
+                        </div>
+                        <div class="shortcut">
+                            <kbd>Ctrl</kbd> + <kbd>S</kbd> Descargar
+                        </div>
+                        <div class="shortcut">
+                            <kbd>R</kbd> Restaurar
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
